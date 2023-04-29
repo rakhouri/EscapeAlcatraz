@@ -74,8 +74,4 @@ public class Room {
         return roomToString;
     }
 
-
-    
-    
-
 }
