@@ -5,13 +5,15 @@ public class Item {
 
     private ArrayList<String> actions = new ArrayList<String>();
     private String name;
+    private String description;
 
     /**
      * Constructor that creates the Item object and gives it a name
      * @param name- The name of the Item object
      */
-    public Item (String name) {
+    public Item (String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     /**
@@ -26,7 +28,7 @@ public class Item {
     /**
      * Checks to see if the item can preform a certain action
      * @param action- The name of the action that wants to be preformed
-     * @return- True or false depending on if the action is in the ArrayList
+     * @return- True or false depending on if the action is in the actions ArrayList
      */
     public boolean hasAction (String action) {
 
