@@ -5,7 +5,7 @@ public class Room {
 
     private String name;
     private String description;
-    ArrayList<Item> items = new ArrayList<String>();
+    ArrayList<Item> items = new ArrayList<Item>();
     ArrayList<String> exits = new ArrayList<String>();
 
     /**
@@ -15,7 +15,7 @@ public class Room {
      */
     public Room(String name, String description) {
         this.name = name;
-        this.description = description
+        this.description = description;
     }
 
     /**

@@ -14,7 +14,7 @@ public class GameMap {
      */
     public void addRoom(Room room) {
 
-        map.put(room.getName().toLowerCase(), room) 
+        map.put(room.getName().toLowerCase(), room);
 
     }
 

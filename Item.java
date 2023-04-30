@@ -32,7 +32,7 @@ public class Item {
      */
     public boolean hasAction (String action) {
 
-        boolean hasAction = false
+        boolean hasAction = false;
 
         for (String s : actions) {
             if (s.equalsIgnoreCase(action)) {
