@@ -16,17 +16,22 @@ import java.io.PrintWriter;
 
 public class Engine {
     public static void main(String[] args) {
+        // Create scanner object
         Scanner scnr = new Scanner(System.in);
 
+        // Creates an arraylist of items that serves as the players inventory
         ArrayList<Item> inventory = new ArrayList<Item>();
         
+        // Creates a GameMap object named map
         GameMap map = new GameMap();
 
+        // Creates different room objects with proper exits and items
         Room sallyPort = new Room("Sally Port", "An armored and controlled entryway to the fortress of Alcatraz beyond. All hope abandon ye who enter in.");
         sallyPort.addExit("Armory");
         sallyPort.addExit("Visiting Room");
+        sallyPort.addExit("Cell Block A");
         map.addRoom(sallyPort);
-
+    
         Room armory = new Room("Armory", "A place where U.S. soldiers would keep their weapons and store their ammunition. Now it is just an abandoned storage room.");
         Item brokenVacuumMotor = new Item("Motor of a broken vacuum", "Still seems like it can be used.");
         brokenVacuumMotor.addAction("craft");
@@ -87,11 +92,67 @@ public class Engine {
 
         Room roofOfCellBlockB = new Room("Roof of Cell Block B", "Accessed through a utility corridor behind my cell. Climbed up Cell Block B. I better not stay here for too long. Escape has to be close.");
         roofOfCellBlockB.addExit("My Cell");
-        map.addRoom(roofOfCellBlockB);
+
 
         Room roof = new Room("Roof", "On top of the world! A sign reads \"NO ONE ESCAPES ALIVE\". If only I had a boat to sail off on." );
         roof.addExit("Roof of Cell Block B");
         map.addRoom(roof);
 
+        // FileOutputStream fileStream = null;
+
+        // try {
+        //     fileStream = new FileOutputStream("gamelog.txt");
+        // } catch (Exception FileNotFoundException) {
+        //     System.out.println("File Not Found");
+        //     System.exit(0);
+        // }
+
+        // PrintWriter outFS = new PrintWriter(fileStream);
+
+        boolean win = false;
+        boolean validRoom = false;
+        String userRoom = "Sally Port";
+        String userInput = "";
+        Room currentRoom;
+
+        // Starts the game by printing the opening statement
+        System.out.println("Welcome To Alacatraz.\nYOU BEAR THE MARK! YOU ARE CURSED!\n");
+        // outFS.println("Welcome To Alacatraz.\nYOU BEAR THE MARK! YOU ARE CURSED!\n");
+
+        // Prints out the initial Sally Room information and sets the currentRoom to Sally Port
+        System.out.println(map.getRoom(userRoom));
+        currentRoom = map.getRoom(userRoom);
+        
+        // Loops while the player has not escaped
+        while (win == false) {
+            userInput = scnr.next();
+
+            // If the user wants to go to a different room
+            if (userInput.equalsIgnoreCase("go") || userInput.equalsIgnoreCase("move") || userInput.equalsIgnoreCase("exit")) {
+                validRoom = false;
+                // Asks user where they would like to go and gets their input
+                System.out.println("Where would you like to go?");
+                scnr.nextLine(); // Scanner buffer
+                userRoom = scnr.nextLine();
+                
+                // Validates that the user selected a proper exit
+                validRoom = currentRoom.validateRoom(userRoom);
+                
+                // While the user does not selected a valid room, ask they for another input
+                while (validRoom == false) {
+                    System.out.println("\nInvalid exit.\n");
+                    userRoom = scnr.nextLine();
+                    validRoom = currentRoom.validateRoom(userRoom);
+                } 
+                // Set the current room to the new room the user selected
+                currentRoom = map.getRoom(userRoom);
+
+                // Print out the current room's information
+                System.out.println("\n" + currentRoom);
+            } 
+
+        }
+
+        // outFS.close();
     }
 }

@@ -64,6 +64,20 @@ public class Room {
         items.add(item);
     }
 
+
+    public boolean validateRoom(String exit) {
+        boolean valid = false;
+
+        for (String s : exits) {
+            if (exit.equalsIgnoreCase(s)) {
+                valid = true;
+                break;
+            }
+        }
+
+        return valid;
+    }
+
     /**
      * Creates a string representation of the room, description, and all possible exits
      * @return- A string of the name of the room, description, and list of exits
