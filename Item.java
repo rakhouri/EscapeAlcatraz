@@ -17,6 +17,22 @@ public class Item {
     }
 
     /**
+     * Returns the name of the item
+     * @return- The item's name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns the description of the item
+     * @return- The item's description
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
      * Adds an action that the player can do with the item to the actions ArrayList
      * @param action- The name of the action
      */
@@ -42,5 +58,16 @@ public class Item {
         }
 
         return hasAction;
+    }
+
+    /**
+     * Creates a string representation of the item by returning it's name
+     * @return- A string of the name of the item
+     */
+    public String toString() {
+
+        String itemToString = this.name;
+
+        return itemToString;
     }
 }
