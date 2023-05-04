@@ -49,7 +49,7 @@ public class Engine {
         Room cellBlockA = new Room("Cell Block A", "A long hall of cells and despair. My cell is on this hall. There is a man shouting nonsense. The musical notes of a harmonica can be heard upstairs.");
         Item raincoat = new Item("Raincoat", "A shiny yellow raincoat. Must have belonged to another prisoner.");
         Item magazine = new Item("Magazine", "A Time's Man Of The Year magazine. John F. Kennedy can be seen on the cover.");
-        magazine.setItemContent("You open up the TIME magazine and read: \n\tIn his first year as President, John Fitzgerald Kennedy showed qualities that have made him a prosiming leader. Those same qualities, if developed further, may make him a great President.");
+        magazine.setItemContent("You open up the TIME magazine and read: \n\tIn his first year as President, John Fitzgerald Kennedy showed qualities that have made him a promising leader. Those same qualities, if developed further, may make him a great President.");
         cellBlockA.addExit("Cell Block B");
         cellBlockA.addExit("My Cell");
         cellBlockA.addExit("Cafeteria");
@@ -382,8 +382,8 @@ public class Engine {
                     outFS.println("Escape is close. I just need a raft to set sail. Swiming would be sucide.");
                 // If they are no on the roof, print there is nowhere to escape
                 } else {
-                    System.out.println("There is nowhere to escape.");
-                    outFS.println("There is nowhere to escape.");
+                    System.out.println("There is nowhere to escape. It isn't that easy.");
+                    outFS.println("There is nowhere to escape. It isn't that easy.");
                 }
             // If the user types an unknown command, print that the word is unknown
             } else {
