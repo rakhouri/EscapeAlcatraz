@@ -49,7 +49,7 @@ public class Engine {
         Room cellBlockA = new Room("Cell Block A", "A long hall of cells and despair. My cell is on this hall. There is a man shouting nonsense. The musical notes of a harmonica can be heard upstairs.");
         Item raincoat = new Item("Raincoat", "A shiny yellow raincoat. Must have belonged to another prisoner.");
         Item magazine = new Item("Magazine", "A Time's Man Of The Year magazine. John F. Kennedy can be seen on the cover.");
-        magazine.setItemContent("You open up the TIME magazine and read: \n\tIn his first year as President, John Fitzgerald Kennedy showed qualities that have made him a posiming leader. Those same qualities, if developed further, may make him a great President.");
+        magazine.setItemContent("You open up the TIME magazine and read: \n\tIn his first year as President, John Fitzgerald Kennedy showed qualities that have made him a prosiming leader. Those same qualities, if developed further, may make him a great President.");
         cellBlockA.addExit("Cell Block B");
         cellBlockA.addExit("My Cell");
         cellBlockA.addExit("Cafeteria");
@@ -73,7 +73,7 @@ public class Engine {
         cafeteria.addItem(sawBlades);
         map.addRoom(cafeteria);
 
-        Room playerCell = new Room("My Cell", "Home sweet home.");
+        Room playerCell = new Room("My Cell", "Home sweet home. I always imagined It would be possible to escape through these walls.");
         Item towel = new Item("Towel", "This thing never seems to be dry.");
         Item cup = new Item("Cup", "There is still some water in it");
         playerCell.addExit("Cell Block A");
@@ -81,13 +81,18 @@ public class Engine {
         playerCell.addItem(cup);
         map.addRoom(playerCell);
 
-        Room roofOfCellBlockB = new Room("Roof of Cell Block B", "Accessed through a utility corridor behind my cell. Climbed up Cell Block B. I better not stay here for too long. Escape has to be close.");
-        roofOfCellBlockB.addExit("My Cell");
+        Room utilityCorridor = new Room("Utility Corridor", "Accessed through a hole in my cell. Climbed up Cell Block B. I better not stay here for too long. Escape has to be close.");
+        utilityCorridor.addExit("My Cell");
+        utilityCorridor.addExit("Roof");
+        map.addRoom(utilityCorridor);
 
 
-        Room roof = new Room("Roof", "On top of the world! A sign reads \"NO ONE ESCAPES ALIVE\". If only I had a boat to sail off on." );
-        roof.addExit("Roof of Cell Block B");
+        Room roof = new Room("Roof", "On top of the world! A sign reads \"NO ONE ESCAPES ALIVE\". Now all I need to do is ESCAPE. If only I had a boat to sail off this island.");
+        roof.addExit("Utility Corridor");
         map.addRoom(roof);
+
+        Item homemadeDrill;
+        Item makeShiftRaft;
 
         // Creates a FileOutputStream object
         FileOutputStream fileStream = null;
@@ -110,6 +115,7 @@ public class Engine {
         boolean hasLetter = false;
         boolean craftDrill = false;
         boolean craftRaft = false;
+        boolean holeDrilled = false;
         String userRoom = "Sally Port";
         String userInput = "";
         int itemIndex = 0;
@@ -131,7 +137,6 @@ public class Engine {
             if (userInput.equalsIgnoreCase("go") || userInput.equalsIgnoreCase("move") || userInput.equalsIgnoreCase("exit") ||userInput.equalsIgnoreCase("go east") ||
                 userInput.equalsIgnoreCase("go west") || userInput.equalsIgnoreCase("go north") || userInput.equalsIgnoreCase("go south")) {
 
-                validRoom = false;
                 // Asks user where they would like to go and gets their input
                 System.out.println("Where would you like to go?");
                 outFS.println("Where would you like to go?");
@@ -266,75 +271,126 @@ public class Engine {
                             outFS.println(letter.getContent());
                         }
                     }
-                // If the user wants to talk to the man in Cell Block A
-                } else if (userInput.equalsIgnoreCase("talk") || userInput.equalsIgnoreCase("man") || userInput.equalsIgnoreCase("talk to man") || userInput.equalsIgnoreCase("talk man")
-                    || userInput.equalsIgnoreCase("speak") || userInput.equalsIgnoreCase("speak to man")) {
-                    
-                    // If the user is in Cell Block A
-                    if (currentRoom.getName().equalsIgnoreCase("Cell Block A")) {
-                        System.out.println("You attempt to communicate with the man:");
-                        outFS.println("You attempt to communicate with the man:");
-                        System.out.println("Fresh meat huh? My name is Weasel. I got put in jail originally for treason but I ended up causing some trouble and now they got me locked up on Alcatraz. If you plan on escaping I wouldn't bother. No one escapes Alcatraz.");
-                        outFS.println("Fresh meat huh? My name is Weasel. I got put in jail originally for treason but I ended up causing some trouble and now they got me locked up on Alcatraz. If you plan on escaping I wouldn't bother. No one escapes Alcatraz.");
-                    // If not, print that there is no one to talk to
-                    } else {
-                        System.out.println("There is on one else to talk to.");
-                        outFS.println("There is on one else to talk to.");
-                    }
-                // If the user wants to play the harmonica
-                } else if (userInput.equalsIgnoreCase("play") || userInput.equalsIgnoreCase("use harmonica") || userInput.equalsIgnoreCase("play harmonica") || userInput.equalsIgnoreCase("play music")
-                    || userInput.equalsIgnoreCase("harmonica")) {
-                    
-                    // Checks to see if the harmonica is in the user's inventory
-                    if (harmonica.hasItem(inventory)) {
-                        System.out.println("You play the sweet sweet melodies of Piano Man on the harmonica. The other prisoners enjoy it. Anything to mask the hopelessness that is Alcatraz.");
-                        outFS.println("You play the sweet sweet melodies of Piano Man on the harmonica. The other prisoners enjoy it. Anything to mask the hopelessness that is Alcatraz.");
-                    // If the user does not have the harmonica, print that there is nothing to play
-                    } else {
-                        System.out.println("You don't have anything to play at the moment.");
-                        outFS.println("You don't have anything to play at the moment.");
-                    }
-                // If the user wants to use their items to craft a new one.
-                } else if (userInput.equalsIgnoreCase("craft") || userInput.equalsIgnoreCase("make") || userInput.equalsIgnoreCase("combine")) {
-
-                    // Checks that the user has a broken vacuum motor and saw blades and that they have not crafted it before
-                    if (brokenVacuumMotor.hasItem(inventory) && sawBlades.hasItem(inventory) && craftDrill == false) {
-                        // Print that the user craft a new homemade drill item
-                        System.out.println("You combine the broken vacuum motor and old saw blades to create a homemade drill.");
-                        outFS.println("You combine the broken vacuum motor and old saw blades to create a homemade drill.");
-
-                        // Create new item object and add it to the user's inventory while removing the items used to craft the new object.
-                        Item homemadeDrill = new Item("Homemade Drill", "Can't believe I was able to make this. I hope no guards find this.");
-                        inventory.add(homemadeDrill);
-                        inventory.remove(brokenVacuumMotor);
-                        inventory.remove(sawBlades);
-
-                        craftDrill = true;
-                    // Checks to see if the user has cardboard and a raincoat in their inventory and that they have no crafted a raft before
-                    } else if (cardboard.hasItem(inventory) && raincoat.hasItem(inventory) && craftRaft == false) {
-                        // Print that the user created a make-shift raft
-                        System.out.println("You combine the cardboard and the raincoat to create a make-shift raft.");
-                        outFS.println("You combine the cardboard and the raincoat to create a make-shift raft.");
-
-                        // Create new makeshift raft item object and add it to the user's inventory while removing the items used to craft it
-                        Item makeShiftRaft = new Item("Make-shift Raft", "Now I only need to big body of water to set sail on this. Good thing we are on an island.");
-                        inventory.add(makeShiftRaft);
-                        inventory.remove(cardboard);
-                        inventory.remove(raincoat);
-
-                        craftRaft = true;
-                    // If the user does not have the sufficient items to craft, print that they have nothing to craft right now
-                    } else {
-                        System.out.println("You have nothing to craft right now.");
-                        outFS.println("You have nothing to craft right now.");
-                    }
-
+            // If the user wants to talk to the man in Cell Block A
+            } else if (userInput.equalsIgnoreCase("talk") || userInput.equalsIgnoreCase("man") || userInput.equalsIgnoreCase("talk to man") || userInput.equalsIgnoreCase("talk man")
+                || userInput.equalsIgnoreCase("speak") || userInput.equalsIgnoreCase("speak to man")) {
+                
+                // If the user is in Cell Block A
+                if (currentRoom.getName().equalsIgnoreCase("Cell Block A")) {
+                    System.out.println("You attempt to communicate with the man:");
+                    outFS.println("You attempt to communicate with the man:");
+                    System.out.println("Fresh meat huh? My name is Weasel. I got put in jail originally for treason but I ended up causing some trouble and now they got me locked up on Alcatraz. If you plan on escaping I wouldn't bother. No one escapes Alcatraz.");
+                    outFS.println("Fresh meat huh? My name is Weasel. I got put in jail originally for treason but I ended up causing some trouble and now they got me locked up on Alcatraz. If you plan on escaping I wouldn't bother. No one escapes Alcatraz.");
+                // If not, print that there is no one to talk to
+                } else {
+                    System.out.println("There is on one else to talk to.");
+                    outFS.println("There is on one else to talk to.");
                 }
+            // If the user wants to play the harmonica
+            } else if (userInput.equalsIgnoreCase("play") || userInput.equalsIgnoreCase("use harmonica") || userInput.equalsIgnoreCase("play harmonica") || userInput.equalsIgnoreCase("play music")
+                || userInput.equalsIgnoreCase("harmonica")) {
+                
+                // Checks to see if the harmonica is in the user's inventory
+                if (harmonica.hasItem(inventory)) {
+                    System.out.println("You play the sweet sweet melodies of Piano Man on the harmonica. The other prisoners enjoy it. Anything to mask the hopelessness that is Alcatraz.");
+                    outFS.println("You play the sweet sweet melodies of Piano Man on the harmonica. The other prisoners enjoy it. Anything to mask the hopelessness that is Alcatraz.");
+                // If the user does not have the harmonica, print that there is nothing to play
+                } else {
+                    System.out.println("You don't have anything to play at the moment.");
+                    outFS.println("You don't have anything to play at the moment.");
+                }
+            // If the user wants to use their items to craft a new one.
+            } else if (userInput.equalsIgnoreCase("craft") || userInput.equalsIgnoreCase("make") || userInput.equalsIgnoreCase("combine")) {
 
-            
+                // Checks that the user has a broken vacuum motor and saw blades and that they have not crafted it before
+                if (brokenVacuumMotor.hasItem(inventory) && sawBlades.hasItem(inventory) && craftDrill == false) {
+                    // Print that the user craft a new homemade drill item
+                    System.out.println("You combine the broken vacuum motor and old saw blades to create a homemade drill.");
+                    outFS.println("You combine the broken vacuum motor and old saw blades to create a homemade drill.");
 
+                    // Create new item object and add it to the user's inventory while removing the items used to craft the new object.
+                    homemadeDrill = new Item("Homemade Drill", "Can't believe I was able to make this. I hope no guards find this.");
+                    inventory.add(homemadeDrill);
+                    inventory.remove(brokenVacuumMotor);
+                    inventory.remove(sawBlades);
+
+                    craftDrill = true;
+                // Checks to see if the user has cardboard and a raincoat in their inventory and that they have no crafted a raft before
+                } else if (cardboard.hasItem(inventory) && raincoat.hasItem(inventory) && craftRaft == false) {
+                    // Print that the user created a make-shift raft
+                    System.out.println("You combine the cardboard and the raincoat to create a make-shift raft.");
+                    outFS.println("You combine the cardboard and the raincoat to create a make-shift raft.");
+
+                    // Create new makeshift raft item object and add it to the user's inventory while removing the items used to craft it
+                    makeShiftRaft = new Item("Make-shift Raft", "Now I only need to big body of water to set sail on this. Good thing we are on an island.");
+                    inventory.add(makeShiftRaft);
+                    inventory.remove(cardboard);
+                    inventory.remove(raincoat);
+
+                    craftRaft = true;
+                // If the user does not have the sufficient items to craft, print that they have nothing to craft right now
+                } else {
+                    System.out.println("You have nothing to craft right now.");
+                    outFS.println("You have nothing to craft right now.");
+                }
+            // If the user wants to break/drill a hole in the wall
+            } else if (userInput.equalsIgnoreCase("break") || userInput.equalsIgnoreCase("drill") || userInput.equalsIgnoreCase("drill wall") || userInput.equalsIgnoreCase("break wall")) {
+                
+                // Checks to see if the user is in their cell and has crafted a drill and has not drilled a hole before
+                if (currentRoom.getName().equalsIgnoreCase("my cell") && craftDrill && holeDrilled == false) {
+                    // Prints out that a hole has been drilled
+                    System.out.println("You successfully drill a hole into the wall and cover it with a towel. Could this be the way to freedom?");
+                    outFS.println("You successfully drill a hole into the wall and cover it with a towel. Could this be the way to freedom?");
+
+                    // Adds new exit to the player's cell
+                    playerCell.addExit("Utility Corridor");
+
+                    // Prints out player cell information with new exit
+                    System.out.println("\n" + playerCell);
+                    outFS.println("\n" + playerCell);
+
+                    holeDrilled = true;
+                // If the user has a drill but is not in their cell. Print that they cannot break anything
+                } else if (craftDrill && !currentRoom.getName().equalsIgnoreCase("my cell")) {
+                    System.out.println("You have nothing to break around you. I'm sure there is something to break in my own cell.");
+                    outFS.println("You have nothing to break around you. I'm sure there is something to break in my own cell.");
+                // If the user has no drill and is not in their cell. Say that they craft break anything
+                } else {
+                    System.out.println("You have nothing to break around you nor have the tools to break something. I'm sure you could find some.");
+                    outFS.println("You have nothing to break around you nor have the tools to break something. I'm sure you could find some.");
+                }
+            // If the user wants to escape
+            } else if (userInput.equalsIgnoreCase("escape") || userInput.equalsIgnoreCase("jump") || userInput.equalsIgnoreCase("freedom") || userInput.equalsIgnoreCase("jump off") || userInput.equalsIgnoreCase("leave")) {
+                
+                // Check that they have drilled the hole, crafted the raft, crafted the drill, and are on the roof
+                if (holeDrilled && craftRaft && craftDrill && currentRoom.getName().equalsIgnoreCase("roof")) {
+                    // If all the cases are met. Print out the wining statement
+                    System.out.println("You climb down the bakery smoke stack at the rear of the cell house. After climbing over the fence. you sneak into the northeast shore of the island and launch your raft.");
+                    outFS.println("You climb down the bakery smoke stack at the rear of the cell house. After climbing over the fence. you sneak into the northeast shore of the island and launch your raft.");
+                    System.out.println("You set sail for San Fransico.");
+                    outFS.println("You set sail for San Fransico.");
+                    System.out.println("You have escaped Alcatraz.");
+                    outFS.println("You have escaped Alcatraz.");
+                    System.out.println("Paradiso awaits.");
+                    outFS.println("Paradiso awaits.");
+
+                    // Sets win to true to end the game
+                    win = true;
+                // If they are on the roof but don't have the raft, print that they cannot escape without it
+                } else if (currentRoom.getName().equalsIgnoreCase("roof") && !craftRaft) {
+                    System.out.println("Escape is close. I just need a raft to set sail. Swiming would be sucide.");
+                    outFS.println("Escape is close. I just need a raft to set sail. Swiming would be sucide.");
+                // If they are no on the roof, print there is nowhere to escape
+                } else {
+                    System.out.println("There is nowhere to escape.");
+                    outFS.println("There is nowhere to escape.");
+                }
+            // If the user types an unknown command, print that the word is unknown
+            } else {
+                System.out.println("I don't know the word \"" + userInput + "\".");
+                outFS.println("I don't know the word \"" + userInput + "\".");
+            }
         }
-
         // Closes the PrintWriter file.
         outFS.close();
     }
