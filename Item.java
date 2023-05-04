@@ -6,6 +6,7 @@ public class Item {
     private ArrayList<String> actions = new ArrayList<String>();
     private String name;
     private String description;
+    private String itemContent;
 
     /**
      * Constructor that creates the Item object and gives it a name
@@ -14,6 +15,14 @@ public class Item {
     public Item (String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    /**
+     * Sets the contents of the item
+     * @param itemContent- A string that holds the contents of the item if the user wants to read the item.
+     */
+    public void setItemContent(String itemContent) {
+        this.itemContent = itemContent;
     }
 
     /**
@@ -30,6 +39,10 @@ public class Item {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    public String getContent() {
+        return this.itemContent;
     }
 
     /**
@@ -58,6 +71,24 @@ public class Item {
         }
 
         return hasAction;
+    }
+
+    /**
+     * Checks to see if the user has a specific item in their inventory
+     * @param inventory- The item ArrayList that contains the items that the user has.
+     * @return- A boolean that depends on if the user has the item or not. 
+     */
+    public boolean hasItem (ArrayList<Item> inventory) {
+        boolean hasItem = false;
+
+        for (Item i : inventory) {
+            if (i.getName().equalsIgnoreCase(getName())) {
+                hasItem = true;
+                break;
+            }
+        }
+
+        return hasItem;
     }
 
     /**

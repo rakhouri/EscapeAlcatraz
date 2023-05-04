@@ -42,6 +42,7 @@ public class Engine {
         Room visitingRoom = new Room("Visiting Room", "A place where loved one's can visit. I doubt anyone is here for me.");
         Item letter = new Item("Letter", "A letter to a prisoner from a loved one. I wonder if they will ever get to see them again.");
         letter.addAction("read");
+        letter.setItemContent("You open up the Letter and read: \n\tMy name is John Anglin. I escaped from Alcatraz in June 1962 with my brother Clarence and Frank Morris. I'm 83 years old and in bad shape. I have cancer. Yes we all made it that night but barely!");
         visitingRoom.addExit("Sally Port");
         visitingRoom.addItem(letter);
         map.addRoom(visitingRoom);
@@ -51,6 +52,7 @@ public class Engine {
         raincoat.addAction("craft");
         Item magazine = new Item("Magazine", "A Time's Man Of The Year magazine. John F. Kennedy can be seen on the cover.");
         magazine.addAction("read");
+        magazine.setItemContent("You open up the TIME magazine and read: \n\tIn his first year as President, John Fitzgerald Kennedy showed qualities that have made him a posiming leader. Those same qualities, if developed further, may make him a great President.");
         cellBlockA.addExit("Cell Block B");
         cellBlockA.addExit("My Cell");
         cellBlockA.addItem(raincoat);
@@ -112,6 +114,8 @@ public class Engine {
         boolean win = false;
         boolean validRoom = false;
         boolean validItem = false;
+        boolean hasMagazine = false;
+        boolean hasLetter = false;
         String userRoom = "Sally Port";
         String userInput = "";
         int itemIndex = 0;
@@ -206,23 +210,69 @@ public class Engine {
                     inventory.add(currentRoom.getItems().get(itemIndex));
                     currentRoom.getItems().remove(itemIndex);
                 }
-            // If the user wants to view their inventory.
+            // If the user wants to view their inventory
             } else if (userInput.equalsIgnoreCase("inventory") || userInput.equalsIgnoreCase("open inventory") || userInput.equalsIgnoreCase("view inventory") || userInput.equalsIgnoreCase("items") 
                 || userInput.equalsIgnoreCase("view items")) {
                 
-                // If the user has no items in their inventory, print that they have no items.
+                // If the user has no items in their inventory, print that they have no items
                 if (inventory.size() == 0) {
                     System.out.println("You have no items.");
                     outFS.println("You have no items.");
-                // If they do have items, print out the user's inventory.
+                // If they do have items, print out the user's inventory
                 } else {
                     System.out.println("\nINVENTORY: ");
+                    outFS.println("\nINVENTORY: ");
                     
                     for (Item i : inventory) {
                         System.out.println("\t" + i + "- " + i.getDescription());
+                        System.out.println("\t" + i + "- " + i.getDescription());
                     }
                 }
-            }
+            // If the user wants to read the magazine or letter
+            } else if (userInput.equalsIgnoreCase("read") || userInput.equalsIgnoreCase("read letter") || userInput.equalsIgnoreCase("read magazine") || userInput.equalsIgnoreCase("open magazine") ||
+                userInput.equalsIgnoreCase("open letter")) {
+                    
+                    // Iterates through the user's inventory to make sure that they have the items to read
+                    hasLetter = letter.hasItem(inventory);
+                    hasMagazine = magazine.hasItem(inventory);
+                    
+                    // If the user does not have the letter or magazine, print that they have no items to read
+                    if (hasLetter == false && hasMagazine == false) {
+                        System.out.println("You have no items to read.");
+                        outFS.println("You have no items to read.");
+                    // If the user has the letter but no magazine, print letter contents
+                    } else if (hasLetter == true && hasMagazine == false) {
+                        System.out.println(letter.getContent());
+                        outFS.println(letter.getContent());
+                    // If the user has the magazine but no letter, print magazine contents
+                    } else if (hasLetter == false && hasMagazine == true) {
+                        System.out.println(magazine.getContent());
+                        outFS.println(magazine.getContent());
+                    // If the user has both
+                    } else {
+                        // Ask the user which one they want to read
+                        System.out.println("Which would you like to read? Magazine or Letter?");
+                        outFS.println("Which would you like to read? Magazine or Letter?");
+                        userInput = scnr.nextLine();
+
+                        // Validate that the user selected either magazine or letter
+                        while (!userInput.equalsIgnoreCase("magazine") & !userInput.equalsIgnoreCase("letter")) {
+                            System.out.println("Please choose which one you want to read.");
+                            outFS.println("Please choose which one you want to read.");
+                            userInput = scnr.nextLine();
+                        }
+                        
+                        // If they chose letter, print out it's content
+                        if (userInput.equalsIgnoreCase(letter.getName())) {
+                            System.out.println(letter.getContent());
+                            outFS.println(letter.getContent());
+                        // If they chose magazine, print out it's content
+                        } else {
+                            System.out.println(magazine.getContent());
+                            outFS.println(letter.getContent());
+                        }
+                    }
+                }
 
             
 
