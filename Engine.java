@@ -365,8 +365,8 @@ public class Engine {
                 // Check that they have drilled the hole, crafted the raft, crafted the drill, and are on the roof
                 if (holeDrilled && craftRaft && craftDrill && currentRoom.getName().equalsIgnoreCase("roof")) {
                     // If all the cases are met. Print out the wining statement
-                    System.out.println("You climb down the bakery smoke stack at the rear of the cell house. After climbing over the fence. you sneak into the northeast shore of the island and launch your raft.");
-                    outFS.println("You climb down the bakery smoke stack at the rear of the cell house. After climbing over the fence. you sneak into the northeast shore of the island and launch your raft.");
+                    System.out.println("You climb down the bakery smoke stack at the rear of the cell house. After climbing over the fence, you sneak into the northeast shore of the island and launch your raft.");
+                    outFS.println("You climb down the bakery smoke stack at the rear of the cell house. After climbing over the fence, you sneak into the northeast shore of the island and launch your raft.");
                     System.out.println("You set sail for San Fransico.");
                     outFS.println("You set sail for San Fransico.");
                     System.out.println("You have escaped Alcatraz.");
@@ -378,8 +378,8 @@ public class Engine {
                     win = true;
                 // If they are on the roof but don't have the raft, print that they cannot escape without it
                 } else if (currentRoom.getName().equalsIgnoreCase("roof") && !craftRaft) {
-                    System.out.println("Escape is close. I just need a raft to set sail. Swiming would be sucide.");
-                    outFS.println("Escape is close. I just need a raft to set sail. Swiming would be sucide.");
+                    System.out.println("Escape is close. I just need a raft to set sail. Swiming would be suicide.");
+                    outFS.println("Escape is close. I just need a raft to set sail. Swiming would be suicide.");
                 // If they are no on the roof, print there is nowhere to escape
                 } else {
                     System.out.println("There is nowhere to escape. It isn't that easy.");
